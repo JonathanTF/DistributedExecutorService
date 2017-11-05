@@ -11,7 +11,7 @@ public class Callables {
 	
 	
 	public static void main(String[] args) {
-		e = new DistributedExecutorService(2222);
+		e = new DistributedExecutorService(args[0], Integer.parseInt(args[1]));
 		Callable<String> t = new SleepyHelloWorldCall();
 		
 		Future<String> f1 = e.submit(t);

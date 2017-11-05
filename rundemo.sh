@@ -17,7 +17,7 @@ echo -n -e "build failed: distrubtedES error\n"
 exit $exitValue
 fi
 
-javac -d bin/ src/Demo/SleepyHelloWorld.java src/Demo/SleepyHelloWorldCall.java src/Demo/SleepyHelloWorldCall2.java
+javac -d bin/ src/Demo/SleepyHelloWorld.java src/Demo/SleepyHelloWorldCall.java src/Demo/SleepyHelloWorldCall2.java src/Demo/RandomNumber.java src/Demo/RandomNumberRun.java 
 
 exitValue=$?
 
@@ -39,5 +39,5 @@ fi
 
 echo -n -e "Running $1 with parameters $2:$3...\n"
 cd bin/
-java Demo.$1 $2 $3
+java Demo.$1 $2 $3 $4
 

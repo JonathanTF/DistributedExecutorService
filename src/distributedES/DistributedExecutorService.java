@@ -74,6 +74,7 @@ public class DistributedExecutorService implements ExecutorService {
     	try {
 			registry = LocateRegistry.getRegistry(host,port);
 		} catch (RemoteException e) {
+			System.out.println("REMOTE EXCEPTION");
 			e.printStackTrace();
 		}
     	Restart();
