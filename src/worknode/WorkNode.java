@@ -10,13 +10,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -36,10 +34,15 @@ public class WorkNode implements RemoteMethods {
     public WorkNode() {
     	super();
     	pool = Executors.newSingleThreadExecutor();
+    	UniqueID = new UID();
+    }
+    
+    public WorkNode(boolean debug) {
+    	super();
+    	pool = Executors.newSingleThreadExecutor();
     	Thread t = new Thread(new TaskTeller());
     	t.start();
     	UniqueID = new UID();
-    	
     }
 	
 	@Override
@@ -145,8 +148,6 @@ public class WorkNode implements RemoteMethods {
 			//f.cancel(false);
 		}
 	}
-
-
 	
 	@Override
 	public ArrayList<String> executeShutdownNow(ArrayList<String> dFT) throws RemoteException {
@@ -177,18 +178,20 @@ public class WorkNode implements RemoteMethods {
 	}
 
     public static void main(String args[]) {
+        boolean debug = false;
         
         try {
         	Registry registry = null;
         	String hostname = null;
         	Integer port = null;
-        	if(args.length==2){
-        		if(args.length>2){
-        			System.err.println("Only first two parameters (hostname, port) will be used");
-        		}
+        	if(args.length>=2){
         		hostname = args[0];
         		port = Integer.parseInt(args[1]);
         		registry = LocateRegistry.getRegistry(hostname,port);
+        		if(args.length>2){
+        			debug = true;
+        			System.err.println("Debug Activated");
+        		}
         	}
         	if(args.length == 1){
         		hostname = args[0];
@@ -196,12 +199,18 @@ public class WorkNode implements RemoteMethods {
         	}else if(args.length == 0){
         		registry = LocateRegistry.getRegistry();
         	}
-            WorkNode obj = new WorkNode();
+        	WorkNode obj = null;
+        	if(debug){
+        		obj = new WorkNode(debug);
+        	}else{
+        		obj = new WorkNode();
+        	}
             RemoteMethods stub = (RemoteMethods) UnicastRemoteObject.exportObject(obj, 0);//object/tcp port          
             registry.bind(UniqueID.toString(), stub);
-        
-            System.err.println("Node ready: " + UniqueID.toString());
-
+            
+            if(debug){
+            	System.err.println("Node ready: " + UniqueID.toString());
+            }
         } catch (Exception e) {
             System.err.println("Node exception: " + e.toString());
             e.printStackTrace();
