@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
 	 *	assigned to it (node) to locate the task on the worknode. It makes the calls 
 	 *	on RemoteMethod stub Objects to effect the actual task as it exists on the 
 	 *	worknode.
-	*	See the java docs on the Future Interface for a general idea of what each
+	 *	See the java docs on the Future Interface for a general idea of what each
 	 *	method does.
 	 */
 

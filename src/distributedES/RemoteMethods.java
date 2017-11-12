@@ -16,9 +16,9 @@ public interface RemoteMethods extends Remote {
 
 	boolean executeCancel(String DistribTaskID, boolean interruptable) throws RemoteException;
 
-    <T> void executeCallable(Callable<T> c, String DistribTaskID) throws RemoteException;
+	<T> void executeCallable(Callable<T> c, String DistribTaskID) throws RemoteException;
 
-    void executeRunnable(Runnable rtask, String myID, Object result) throws RemoteException;
+	void executeRunnable(Runnable rtask, String myID, Object result) throws RemoteException;
 
 	<T> T executeGet(String DistribTaskID) throws RemoteException;
 
