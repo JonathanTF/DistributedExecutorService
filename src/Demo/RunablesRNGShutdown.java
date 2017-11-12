@@ -8,6 +8,14 @@ import java.util.concurrent.TimeUnit;
 
 import distributedES.DistributedExecutorService;
 
+/**
+ *RunablesRNGShutdown
+ *Submits a given number of RandomNumberRun threads to the executor service.
+ *It waits 10 seconds before shutting down the executor service.
+ *One should observe work nodes being interrupted and having their tasks cancelled.
+ *Prints out the number of RandomNumberRun threads that the worknodes didn't get to. 
+ */
+
 public class RunablesRNGShutdown {
 	static ExecutorService e;
 	
@@ -36,7 +44,6 @@ public class RunablesRNGShutdown {
 				System.out.println("SHUTTING DOWN");
 
 				returnList = (ArrayList<Runnable>) es.shutdownNow();
-				
 				
 				
 				System.out.println("We missed " + returnList.size() +" random numbers");

@@ -4,7 +4,15 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+
 import distributedES.DistributedExecutorService;
+
+/**
+ *CallablesRNGInvokeAll
+ *Given a number as the third paramter, creates that many new threads that generate and return a random number.
+ *This Demo calls invokeAll with a list of threads to execute instead of submitting them individually.
+ *Returns an array of Futures that are then printed to the terminal.
+ */
 
 public class CallablesRNGInvokeAll {
 	static ExecutorService e;

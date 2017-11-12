@@ -5,6 +5,11 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+/**
+ *RandomNumberRun
+ *Runnable thread class that sleeps for 1 second, generates and prints a random number, sleeps for another second, then exits
+ */
+
 public class RandomNumberRun implements Runnable, Serializable {
 
 	private static final long serialVersionUID = 1L;

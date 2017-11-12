@@ -11,6 +11,12 @@ import java.util.concurrent.TimeUnit;
 import distributedES.DistributedExecutorService;
 import distributedES.DistributedFutureTask;
 
+/**
+ *CallablesAwaitTermination
+ *submits 4 SleepyHelloWorldCall threads to the executor service, then prematurely terminates the executor service.
+ *will wait for each of the worknodes to finish termination. Will print out every 4 seconds that it is waiting
+ */
+
 public class CallablesAwaitTermination {
 	static ExecutorService e;
 	

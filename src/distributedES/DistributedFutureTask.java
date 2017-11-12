@@ -11,18 +11,26 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class DistributedFutureTask<T> implements Serializable, Future<Object> {
 	/**
-	 * 
+	 *	The future object that is returned by the Distributed Executor Service. 
+	 *	Performs method calls using its Task ID (myID) and the ID of the worknode
+	 *	assigned to it (node) to locate the task on the worknode. It makes the calls 
+	 *	on RemoteMethod stub Objects to effect the actual task as it exists on the 
+	 *	worknode.
+	*	See the java docs on the Future Interface for a general idea of what each
+	 *	method does.
 	 */
+
+public class DistributedFutureTask<T> implements Serializable, Future<Object> {
+
 	private static final long serialVersionUID = 1L;
 	boolean isCallable;
 	private boolean cancelled;
 	private Object RunReturnObj;
 	private boolean isDone;
 	String host;
-	Callable<?> Ctask;
-	Runnable Rtask;
+	Callable<?> Ctask; //if I am callable, this is my callable onject
+	Runnable Rtask; //if I am runnable, this is my runnable object
 	String node;
 	String myID;
 	Registry registry;

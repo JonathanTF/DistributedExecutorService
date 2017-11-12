@@ -4,7 +4,14 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+
 import distributedES.DistributedExecutorService;
+
+/**
+ *CallablesRNG
+ *Creates a given number RandomNumber callable threads and submits them to the executor service in the order they were submitted.
+ *calls get() on the futures in the order they were submitted, and prints the returned random numbers as they are generated.
+ */
 
 public class CallablesRNG {
 	static ExecutorService e;

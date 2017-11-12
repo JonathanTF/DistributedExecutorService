@@ -1,6 +1,4 @@
 package worknode;
-//a 'Server' that acts as the nodes for the ES
-//
 
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
@@ -19,15 +17,19 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-//import distributedES.DistributedFutureTask;
 import distributedES.RemoteMethods;
+
+/**
+*	The WorkNode that connects to an RMI registry on startup and is used by Distributed
+*	Executor Services to run tasks.
+*/
         
 public class WorkNode implements RemoteMethods {
     
-	Hashtable<String,Future<?>> futures = new Hashtable<String, Future<?>>();
+	Hashtable<String,Future<?>> futures = new Hashtable<String, Future<?>>();//hash of Futures and corresponding Distibuted Task IDs
 	Lock ShutdownLock = new ReentrantLock();
-	static ExecutorService pool;
-	static UID UniqueID;
+	static ExecutorService pool;//singleton thread executor used for each node to run requested tasks
+	static UID UniqueID;//nodeID
 	static Integer numTasks = 0;
 	
 	
@@ -37,6 +39,7 @@ public class WorkNode implements RemoteMethods {
     	UniqueID = new UID();
     }
     
+    //debug option starts up a thread to print the current number of tasks
     public WorkNode(boolean debug) {
     	super();
     	pool = Executors.newSingleThreadExecutor();
@@ -49,10 +52,12 @@ public class WorkNode implements RemoteMethods {
 	public <T> void executeCallable(Callable<T> c, String DistribTaskID) throws RemoteException {
 		ShutdownLock.lock();
 		numTasks++;
+
 		Thread dec = new Thread(new Decrementer());
 		Future<T> f = pool.submit(c);
 		pool.submit(dec);
-		futures.put(DistribTaskID,f);//
+		
+		futures.put(DistribTaskID,f);
 		ShutdownLock.unlock();
 	}
 	
@@ -60,9 +65,11 @@ public class WorkNode implements RemoteMethods {
 	public void executeRunnable(Runnable r, String DistribTaskID, Object result) throws RemoteException {
 		ShutdownLock.lock();
 		numTasks++;
+
 		Thread dec = new Thread(new Decrementer());
 		Future<Object> f = pool.submit(r, result);
 		pool.submit(dec);
+
 		futures.put(DistribTaskID, f);
 		ShutdownLock.unlock();
 	}
@@ -71,6 +78,8 @@ public class WorkNode implements RemoteMethods {
 	@Override
 	public <T> T executeGet(String DistribTaskID) throws RemoteException {
 		T result = null;
+		
+		//find the future by the distributed task id and get() it
 		Future<T> f = (Future<T>) futures.get(DistribTaskID);
 		try {
 			result = f.get();
@@ -124,6 +133,7 @@ public class WorkNode implements RemoteMethods {
 	
 	Lock numTaskLock = new ReentrantLock();
 	
+	//placed into the singleton pool immediately after a task is placed in to prevent concurrent or missing numTask-- statements
 	public class Decrementer implements Runnable{
 
 		@Override
@@ -145,7 +155,6 @@ public class WorkNode implements RemoteMethods {
 	public void executeShutdown(ArrayList<String> dFT) throws RemoteException {
 		for(String dft : dFT){
 			Future<?> f = futures.get(dft);
-			//f.cancel(false);
 		}
 	}
 	
@@ -181,6 +190,7 @@ public class WorkNode implements RemoteMethods {
         boolean debug = false;
         
         try {
+        	//inputs
         	Registry registry = null;
         	String hostname = null;
         	Integer port = null;
@@ -193,26 +203,33 @@ public class WorkNode implements RemoteMethods {
         			System.err.println("Debug Activated");
         		}
         	}
+
+        	//find registry
         	if(args.length == 1){
         		hostname = args[0];
         		registry = LocateRegistry.getRegistry(hostname);
         	}else if(args.length == 0){
         		registry = LocateRegistry.getRegistry();
         	}
+
+        	//start node
         	WorkNode obj = null;
         	if(debug){
         		obj = new WorkNode(debug);
         	}else{
         		obj = new WorkNode();
         	}
+
+        	//bind stub
             RemoteMethods stub = (RemoteMethods) UnicastRemoteObject.exportObject(obj, 0);//object/tcp port          
             registry.bind(UniqueID.toString(), stub);
             
             if(debug){
             	System.err.println("Node ready: " + UniqueID.toString());
             }
+
         } catch (Exception e) {
-            System.err.println("Node exception: " + e.toString());
+            System.err.println("Node exception; could not find RMI registry: " + e.toString());
             e.printStackTrace();
         }
     }
@@ -234,7 +251,5 @@ public class WorkNode implements RemoteMethods {
 		}
 		
 	}
-
-
 
 }

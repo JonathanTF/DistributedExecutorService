@@ -3,6 +3,11 @@ package Demo;
 import java.util.concurrent.ExecutorService;
 import distributedES.DistributedExecutorService;
 
+/**
+ *Runnables
+ *Given a third parameter as an integer, submits that many SleepyHelloWorld Runnable threads to the executor service.
+ */
+
 public class Runnables {
 	
 	public static void main(String[] args){

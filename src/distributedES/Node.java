@@ -1,10 +1,15 @@
 package distributedES;
 import java.util.ArrayList;
 
+/**
+*	Distributed Executor Service's representation of a work node.
+*	Contains an ID for that work node and a list of tasks associated with it.
+*	Implements comparable to be used in a queue sorted by number of tasks
+*/
+
 public class Node implements Comparable<Node> {
 
 	String UID;
-	//LinkedList<DistributedFutureTask> Queue;
 	int numTasks;
 	ArrayList<String>DFTs;
 	

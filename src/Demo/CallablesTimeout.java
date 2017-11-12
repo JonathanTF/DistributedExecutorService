@@ -9,12 +9,23 @@ import java.util.concurrent.TimeoutException;
 
 import distributedES.DistributedExecutorService;
 
+/**
+ *CallablesTimeout
+ *Submits 4 SleepyHelloWorldCall threads to the executor service and call get() on the first future with a 3 second timeout.
+ *The expected output is "First task: null" followed with "Final Results: I'm Done!I'm Done!I'm Done!I'm Done!" on the next line. 
+ */
+
 public class CallablesTimeout {
 	static ExecutorService e;
 	
 	
 	public static void main(String[] args) {
-		e = new DistributedExecutorService(8050);
+		//assuming args are hostname,port number, and number of callables
+		String hostname = args[0];
+		Integer port = Integer.parseInt(args[1]);
+				
+		ExecutorService e = new DistributedExecutorService(hostname,port);
+	
 		Callable<String> t = new SleepyHelloWorldCall();
 		
 		Future<String> f1 = e.submit(t);
@@ -28,7 +39,7 @@ public class CallablesTimeout {
 		
 		try {
 			System.out.print(f1.get(3, TimeUnit.SECONDS) + "\n");
-		} catch (Exception e){
+		} catch (Exception ex){
 			
 		}
 		

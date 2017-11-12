@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+/**
+ *Callable thread that Sleeps for 7 seconds before printing Hello World.
+ *Returns the string "I'm Done" to the caller.
+ */
+
 public class SleepyHelloWorldCall implements Callable<String>, Serializable {
 
 	private static final long serialVersionUID = 1L;

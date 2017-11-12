@@ -4,7 +4,13 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+
 import distributedES.DistributedExecutorService;
+
+/**
+ *Callables
+ *Submits 6 SleepyHelloWorldCall callable threads to the executor service that will each return "I'm Done!" after 7 seconds.
+ */
 
 public class Callables {
 	static ExecutorService e;

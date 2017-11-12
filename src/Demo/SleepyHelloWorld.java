@@ -3,6 +3,10 @@ package Demo;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
+/**
+ *Runnable class that slleps for 4 seconds before printing Hello World
+ */
+
 public class SleepyHelloWorld implements Runnable, Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -8,6 +8,10 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.Future;
  
+/**
+*	Interface that the stub objects implement to use RMI
+*/
+
 public interface RemoteMethods extends Remote {
 
 	boolean executeCancel(String DistribTaskID, boolean interruptable) throws RemoteException;
@@ -24,7 +28,7 @@ public interface RemoteMethods extends Remote {
 	 
 	 boolean executeIsTerminated(ArrayList<String> dFT) throws RemoteException;
 	 
-	 int executeGetNode() throws RemoteException;
+	 int executeGetNode() throws RemoteException;//returns number of tasks the node has
 
 	 ArrayList<String> executeShutdownNow(ArrayList<String> dFT) throws RemoteException;
 
