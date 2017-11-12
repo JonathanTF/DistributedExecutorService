@@ -11,7 +11,7 @@ This project uses java Remote Method Invocation or RMI that provides an interfac
   when it is initalized and uses the nodes registered to it to perform work. These work nodes are a separate program that could be run on any machine,
   but for this prototype only localhost has been tested. The WorkNodes can be started using:
 
-  java -jar WorkNode.java <host> <port>
+  java -jar WorkNode.java [host] [port]
 
   Where host and port are the location of your RMI registry.
 
