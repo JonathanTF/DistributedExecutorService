@@ -16,3 +16,13 @@ Before running your code, you must start up all the work nodes you need.
 You can look at the Demos or the PDFs to see examples of how to use the executor service.
 
 More on java RMI: https://docs.oracle.com/javase/tutorial/rmi/overview.html
+
+
+Scripts:
+
+rundemo.sh [demo] [arg1] [arg2] [...] - This rebuilds and runs a demo with given arguments (must have JDK installed)
+
+rundemo_nojdk.sh [demo] [arg1] [arg2] [...] - This runs a demo with given arguments
+
+startreg_win.sh [host] [port] - Starts an RMI registry on the given host:port using the provided rmiregistry.exe file
+
